@@ -76,6 +76,7 @@
         const text = await resp.text();
         document.getElementById("out").textContent = text;
         console.log(text);
+        await getTimes();
       }
     </script>
   </body>
