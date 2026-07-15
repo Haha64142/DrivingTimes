@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Driving Times</title>
+    <style>
+      html,
+      body {
+        background: black;
+        color: white;
+      }
+
+      button {
+        font-size: 2em;
+        color: white;
+        border: none;
+        border-radius: 0.25em;
+        width: 5em;
+      }
+
+      .start {
+        background-color: #f4a259;
+      }
+
+      .start:hover {
+        background-color: #e89543;
+      }
+
+      .stop {
+        background-color: #d9534f;
+      }
+
+      .stop:hover {
+        background-color: #c9433e;
+      }
+
+      .get {
+        color: #404040;
+        background-color: #f0f0f0;
+      }
+
+      .get:hover {
+        background-color: #d0d0d0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button class="start" onclick="start()">Start</button>
+    <button class="stop" onclick="stop()">Stop</button>
+    <button class="get" onclick="getTimes()">Get Times</button>
+    <p id="out"></p>
+
+    <script type="text/javascript">
+      async function getTimes() {
+        const resp = await fetch(
+          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=get",
+        );
+        const text = await resp.text();
+        document.getElementById("out").textContent = text;
+        console.log(text);
+      }
+      async function start() {
+        const resp = await fetch(
+          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=start",
+        );
+        const text = await resp.text();
+        document.getElementById("out").textContent = text;
+        console.log(text);
+      }
+      async function stop() {
+        const resp = await fetch(
+          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=stop",
+        );
+        const text = await resp.text();
+        document.getElementById("out").textContent = text;
+        console.log(text);
+      }
+    </script>
+  </body>
+</html>
