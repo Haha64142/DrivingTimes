@@ -7,6 +7,7 @@
     <style>
       html,
       body {
+        font-family: sans-serif;
         background: black;
         color: white;
       }
@@ -17,6 +18,14 @@
         border: none;
         border-radius: 0.25em;
         width: 5em;
+        cursor: pointer;
+        transition:
+          background-color 0.12s ease,
+          transform 0.05s ease;
+      }
+
+      button:active {
+        transform: translateY(1px);
       }
 
       .start {
@@ -27,6 +36,10 @@
         background-color: #e89543;
       }
 
+      .start:active {
+        background-color: #d8822d;
+      }
+
       .stop {
         background-color: #d9534f;
       }
@@ -35,13 +48,25 @@
         background-color: #c9433e;
       }
 
+      .stop:active {
+        background-color: #b73833;
+      }
+
       .get {
-        color: #404040;
+        color: #202020;
         background-color: #f0f0f0;
       }
 
       .get:hover {
         background-color: #d0d0d0;
+      }
+
+      .get:active {
+        background-color: #b0b0b0;
+      }
+
+      #out {
+        white-space: pre-wrap;
       }
     </style>
   </head>
@@ -53,29 +78,33 @@
     <p id="out"></p>
 
     <script type="text/javascript">
-      async function getTimes() {
-        const resp = await fetch(
-          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=get",
-        );
-        const text = await resp.text();
-        document.getElementById("out").textContent = text;
+      const url =
+        "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec";
+      const out = document.getElementById("out");
+      let outList = [];
+      function output(text) {
         console.log(text);
+        outList.push(text);
+        out.textContent = outList.join("\n");
+        setTimeout(() => {
+          outList.shift();
+          out.textContent = outList.join("\n");
+        }, 5000);
+      }
+      async function getTimes() {
+        const resp = await fetch(`${url}?method=get`);
+        const text = await resp.text();
+        output(text);
       }
       async function start() {
-        const resp = await fetch(
-          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=start",
-        );
+        const resp = await fetch(`${url}?method=start`);
         const text = await resp.text();
-        document.getElementById("out").textContent = text;
-        console.log(text);
+        output(text);
       }
       async function stop() {
-        const resp = await fetch(
-          "https://script.google.com/macros/s/AKfycbwcMxA9Te4y5oaz6vz69zmNRjptcpNhitDMgCHGw2TL24ADyfVZ9LTcmpkLzc7I43Nv/exec?method=stop",
-        );
+        const resp = await fetch(`${url}?method=stop`);
         const text = await resp.text();
-        document.getElementById("out").textContent = text;
-        console.log(text);
+        output(text);
         await getTimes();
       }
     </script>
