@@ -17,7 +17,8 @@
         color: white;
         border: none;
         border-radius: 0.25em;
-        width: 5em;
+        min-width: 5em;
+        padding-inline: 10px;
         cursor: pointer;
         transition:
           background-color 0.12s ease,
@@ -52,6 +53,18 @@
         background-color: #b73833;
       }
 
+      .stop-night {
+        background-color: #14b8a6;
+      }
+
+      .stop-night:hover {
+        background-color: #0d9c8d;
+      }
+
+      .stop-night:active {
+        background-color: #0b8c80;
+      }
+
       .get {
         color: #202020;
         background-color: #f0f0f0;
@@ -74,6 +87,7 @@
   <body>
     <button class="start" onclick="start()">Start</button>
     <button class="stop" onclick="stop()">Stop</button>
+    <button class="stop-night" onclick="stop(true)">Stop Night</button>
     <button class="get" onclick="getTimes()">Get Times</button>
     <p id="out"></p>
 
@@ -101,8 +115,8 @@
         const text = await resp.text();
         output(text);
       }
-      async function stop() {
-        const resp = await fetch(`${url}?method=stop`);
+      async function stop(night = false) {
+        const resp = await fetch(`${url}?method=stop&data={"night":${night}}`);
         const text = await resp.text();
         output(text);
         await getTimes();
